@@ -1,0 +1,106 @@
+{
+	"info": {
+		"_postman_id": "7652ca34-bf51-4550-9388-497d040d42ce",
+		"name": "BookAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7199/books",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7199",
+					"path": [
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7199/books",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7199",
+					"path": [
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"isbn\": \"4\",\n    \"name\": \"4\",\n    \"pages\": 4,\n    \"publishDate\": \"2022-02-16T16:32:01.9430285+01:00\"\n}"
+				},
+				"url": {
+					"raw": "https://localhost:7199/books",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7199",
+					"path": [
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Copy",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"isbn\": \"69\",\n    \"name\": \"69\",\n    \"pages\": 69,\n    \"publishDate\": \"2069-02-16T16:32:01.9430285+01:00\"\n}"
+				},
+				"url": {
+					"raw": "https://localhost:7199/books/4f229c93-0cf9-4f79-a01b-786618fe634b",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7199",
+					"path": [
+						"books",
+						"4f229c93-0cf9-4f79-a01b-786618fe634b"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
