@@ -3,14 +3,13 @@ using Microsoft.AspNetCore.JsonPatch;
 
 public interface IBookService
 {
-    public IEnumerable<Book> GetAll();
+    public IEnumerable<BookDTO> GetAll();
 
-    public Book GetByID(Guid guid);
+    public BookDTO GetByID(int guid);
 
-    public Book Add(BaseBook guid);
+    public BookDTO Add(BaseBookDTO guid);
 
-    public Book Delete(Guid guid);
+    public void Delete(int guid);
 
-    public Book Modify(BaseBook book, Guid guid);
-    public Book Patch(JsonPatchDocument<Book> baseBook, Guid guid);
+    public BookDTO Modify(BaseBookDTO book, int guid);
 }

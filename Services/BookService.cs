@@ -1,58 +1,61 @@
+using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 
 public class BookService : IBookService
 {
-    public Book Add(BaseBook baseBook)
+    private readonly LibraryContext _context;
+    private readonly IMapper _mapper;
+
+    public BookService(LibraryContext context, IMapper mapper)
     {
-        var result = new Book(baseBook);
-        Constants.BOOKS.Add(result);
-        return result;
+        _context = context;
+        _mapper = mapper;
     }
 
-    public Book Delete(Guid guid)
+    public BookDTO Add(BaseBookDTO baseBook)
     {
-        Book listBook = Constants.BOOKS.FirstOrDefault(x => x.Id == guid);
-
-        if (listBook == null)
-            return null;
-
-        return listBook;
+        var _mappedBook = _mapper.Map<BookEntity>(baseBook);
+        var entityAdded = _context.Books.Add(_mappedBook);
+        _context.SaveChanges();
+        return _mapper.Map<BookDTO>(entityAdded);
     }
 
-    public IEnumerable<Book> GetAll()
+    public void Delete(int guid)
     {
-        return Constants.BOOKS;
-    }
+        BookEntity book = _context.Books.FirstOrDefault(x => x.Id == guid);
 
-    public Book GetByID(Guid guid)
-    {
-        return Constants.BOOKS.FirstOrDefault(x => x.Id == guid);
-    }
-
-    public Book Modify(BaseBook book, Guid guid)
-    {
-        Book listBook = Constants.BOOKS.FirstOrDefault(x => x.Id == guid);
-
-        if (listBook == null)
-            return null;
-
-        var newBook = new Book(book, guid);
-        Constants.BOOKS.Remove(listBook);
-        Constants.BOOKS.Add(newBook);
-        return newBook;
-    }
-
-    public Book Patch(JsonPatchDocument<Book> patchBook, Guid guid)
-    {
-        var book = Constants.BOOKS.FirstOrDefault(x => x.Id == guid);
         if (book == null)
+            throw new ApplicationException($"Bokk with id {guid} not found");
+
+        _context.Books.Remove(book);
+        _context.SaveChanges();
+    }
+
+    public IEnumerable<BookDTO> GetAll()
+    {
+        return _mapper.Map<IEnumerable<BookDTO>>(_context.Books.Select(x => x));
+    }
+
+    public BookDTO GetByID(int guid)
+    {
+        return _mapper.Map<BookDTO>(_context.Books.FirstOrDefault(x => x.Id == guid));
+    }
+
+    public BookDTO Modify(BaseBookDTO book, int guid)
+    {
+        var _mappedBook = _mapper.Map<BookEntity>(book);
+        _mappedBook.Id = guid;
+
+        BookEntity modifiedBook = _context.Books.FirstOrDefault(x => x.Id == guid);
+
+        if (modifiedBook == null)
             return null;
 
-        Constants.BOOKS.Remove(book);
-        patchBook.ApplyTo(book);
-        Constants.BOOKS.Add(book);
+        _context.Entry(modifiedBook).CurrentValues.SetValues(_mappedBook);
 
-        return book;
+        _context.SaveChanges();
 
+        return _mapper.Map<BookDTO>(_mappedBook);
     }
+
 }

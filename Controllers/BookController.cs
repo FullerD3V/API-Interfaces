@@ -17,18 +17,18 @@ public class BooksController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Book))]
-    public ActionResult<Book> Get()
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BookDTO))]
+    public ActionResult<BookDTO> Get()
     {
         return Ok(_bookService.GetAll());
     }
 
     [HttpGet("{Id}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Book))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BookDTO))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<Book> Get(Guid Id)
+    public ActionResult<BookDTO> Get(int Id)
     {
-        Book result = _bookService.GetByID(Id);
+        BookDTO result = _bookService.GetByID(Id);
 
         if (result == null)
             return NotFound();
@@ -37,32 +37,39 @@ public class BooksController : ControllerBase
 
     }
 
+
+    [HttpDelete("{Id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BookDTO))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult<BookDTO> Delete(int Id)
+    {
+        BookDTO result = _bookService.GetByID(Id);
+
+        if (result == null)
+            return NotFound();
+
+        _bookService.Delete(Id);
+
+        return Ok(result);
+
+    }
+
+
+
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Book))]
-    public ActionResult<Book> Post([FromBody] BaseBook baseBook)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BookDTO))]
+    public ActionResult<BookDTO> Post([FromBody] BaseBookDTO baseBook)
     {
 
         return Ok(_bookService.Add(baseBook));
     }
 
     [HttpPut("{Id}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Book))]
-    public ActionResult<Book> Put([FromBody] BaseBook baseBook, Guid Id)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BookDTO))]
+    public ActionResult<BookDTO> Put([FromBody] BaseBookDTO baseBook, int Id)
     {
 
         return Ok(_bookService.Modify(baseBook, Id));
     }
 
-    [HttpPatch("{Id}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Book))]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<Book> Patch([FromBody] JsonPatchDocument<Book> baseBook, Guid Id)
-    {
-        Book result = _bookService.Patch(baseBook, Id);
-
-        if (result == null)
-            return NotFound();
-
-        return Ok(result);
-    }
 }
