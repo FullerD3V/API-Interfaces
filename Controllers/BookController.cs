@@ -37,7 +37,6 @@ public class BooksController : ControllerBase
 
     }
 
-
     [HttpDelete("{Id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BookDTO))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -53,8 +52,6 @@ public class BooksController : ControllerBase
         return Ok(result);
 
     }
-
-
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BookDTO))]

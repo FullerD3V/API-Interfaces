@@ -4,7 +4,5 @@ public class BookDTO : BaseBookDTO
     {
 
     }
-
-
     public int Id { get; set; }
 }
